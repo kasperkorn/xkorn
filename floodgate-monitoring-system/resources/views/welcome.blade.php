@@ -8,10 +8,10 @@
         
         <form method="POST" action="{{ route('floodgate.search') }}">
             @csrf
-            <div>
-                <label for="floodgate_id">Floodgate ID:</label>
-                <input type="text" name="floodgate_id" id="floodgate_id" pattern="[0-9]{5}" title="Enter 5-digit ID" value="{{ old('floodgate_id', isset($searched_id) && $searched_id ? $searched_id : '') }}" required>
-                <button type="submit">Search</button>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                <label for="floodgate_id" style="flex-basis: 100px;">Floodgate ID:</label>
+                <input type="text" name="floodgate_id" id="floodgate_id" pattern="[0-9]{5}" title="Enter 5-digit ID" value="{{ old('floodgate_id', isset($searched_id) && $searched_id ? $searched_id : '') }}" required style="flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <button type="submit" style="padding: 8px 15px; background-color: #337ab7; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
             </div>
             @error('floodgate_id')
                 <div style="color: red; margin-top: 5px;">{{ $message }}</div>
@@ -25,7 +25,7 @@
         @endif
 
         @if(isset($search_result) && $search_result)
-            <div style="margin-top: 20px;">
+            <div style="margin-top: 20px;" class="table-responsive-container">
                 <h3>Search Result:</h3>
                 <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
                     <thead>
@@ -63,30 +63,32 @@
         <h2><img src="https://via.placeholder.com/30x30?text=📄" alt="List Icon" style="vertical-align: middle; margin-right: 10px;"> Floodgate List</h2>
         
         @if(isset($all_floodgates) && $all_floodgates->count() > 0)
-            <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
-                <thead>
-                    <tr>
-                        <th style="padding: 8px;">No.</th>
-                        <th style="padding: 8px;">ID</th>
-                        <th style="padding: 8px;">Location</th>
-                        <th style="padding: 8px;">Water Flow Rate (m³/s)</th>
-                        <th style="padding: 8px;">Status</th>
-                        <th style="padding: 8px;">Pump Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($all_floodgates as $floodgate)
+            <div class="table-responsive-container">
+                <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
                         <tr>
-                            <td style="padding: 8px;">{{ $loop->iteration + ($all_floodgates->currentPage() - 1) * $all_floodgates->perPage() }}</td>
-                            <td style="padding: 8px;">{{ $floodgate->id }}</td>
-                            <td style="padding: 8px;">{{ $floodgate->location }}</td>
-                            <td style="padding: 8px;">{{ $floodgate->water_flow_rate }}</td>
-                            <td style="padding: 8px;">{{ $floodgate->status }}</td>
-                            <td style="padding: 8px;">{{ $floodgate->pump_status }}</td>
+                            <th style="padding: 8px;">No.</th>
+                            <th style="padding: 8px;">ID</th>
+                            <th style="padding: 8px;">Location</th>
+                            <th style="padding: 8px;">Water Flow Rate (m³/s)</th>
+                            <th style="padding: 8px;">Status</th>
+                            <th style="padding: 8px;">Pump Status</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($all_floodgates as $floodgate)
+                            <tr>
+                                <td style="padding: 8px;">{{ $loop->iteration + ($all_floodgates->currentPage() - 1) * $all_floodgates->perPage() }}</td>
+                                <td style="padding: 8px;">{{ $floodgate->id }}</td>
+                                <td style="padding: 8px;">{{ $floodgate->location }}</td>
+                                <td style="padding: 8px;">{{ $floodgate->water_flow_rate }}</td>
+                                <td style="padding: 8px;">{{ $floodgate->status }}</td>
+                                <td style="padding: 8px;">{{ $floodgate->pump_status }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             <div style="margin-top: 20px;">
                 {{ $all_floodgates->links() }}
             </div>
@@ -100,24 +102,24 @@
         
         @if(isset($dashboard_stats))
             <h3>Overall Status</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; margin-bottom: 30px;">
-                <div style="background-color: #cceeff; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <div class="dashboard-cards-container" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; margin-bottom: 30px;">
+                <div class="dashboard-card" style="background-color: #cceeff; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                     <h4><img src="https://via.placeholder.com/20x20?text=⚙️" alt="Total Icon" style="vertical-align: middle; margin-right: 5px;"> Total Gates</h4>
                     <p style="font-size: 2em; margin-top: 5px;">{{ $dashboard_stats['total_gates'] ?? 0 }}</p>
                 </div>
-                <div style="background-color: #ccffcc; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <div class="dashboard-card" style="background-color: #ccffcc; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                     <h4><img src="https://via.placeholder.com/20x20?text=🟢" alt="Open Icon" style="vertical-align: middle; margin-right: 5px;"> Gates Open</h4>
                     <p style="font-size: 2em; margin-top: 5px;">{{ $dashboard_stats['open_gates'] ?? 0 }}</p>
                 </div>
-                <div style="background-color: #ffcccc; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <div class="dashboard-card" style="background-color: #ffcccc; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                     <h4><img src="https://via.placeholder.com/20x20?text=🔴" alt="Closed Icon" style="vertical-align: middle; margin-right: 5px;"> Gates Closed</h4>
                     <p style="font-size: 2em; margin-top: 5px;">{{ $dashboard_stats['closed_gates'] ?? 0 }}</p>
                 </div>
-                <div style="background-color: #ccddff; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <div class="dashboard-card" style="background-color: #ccddff; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                     <h4><img src="https://via.placeholder.com/20x20?text=💨" alt="Pump Active Icon" style="vertical-align: middle; margin-right: 5px;"> Pumps Active</h4>
                     <p style="font-size: 2em; margin-top: 5px;">{{ $dashboard_stats['pumps_active'] ?? 0 }}</p>
                 </div>
-                <div style="background-color: #ffddcc; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <div class="dashboard-card" style="background-color: #ffddcc; padding: 20px; border-radius: 10px; text-align: center; flex-basis: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                     <h4><img src="https://via.placeholder.com/20x20?text=🚫" alt="Pump Inactive Icon" style="vertical-align: middle; margin-right: 5px;"> Pumps Inactive</h4>
                     <p style="font-size: 2em; margin-top: 5px;">{{ $dashboard_stats['pumps_inactive'] ?? 0 }}</p>
                 </div>
@@ -139,9 +141,10 @@
         padding: 0;
         display: flex;
         justify-content: center;
+        flex-wrap: wrap; /* Allow pagination to wrap on small screens */
     }
     .pagination li {
-        margin: 0 5px;
+        margin: 5px; /* Add some margin for wrapped items */
     }
     .pagination li a,
     .pagination li span {

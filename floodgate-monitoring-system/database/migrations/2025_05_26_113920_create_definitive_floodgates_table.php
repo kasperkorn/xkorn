@@ -15,8 +15,8 @@ return new class extends Migration
             \$table->string('id', 5)->primary();
             \$table->string('location');
             \$table->decimal('water_flow_rate', 8, 2);
-            \$table->enum('status', ['open', 'close']);
-            \$table->enum('pump_status', ['open', 'close']);
+            \$table->string('status'); // Changed from enum
+            \$table->string('pump_status'); // Changed from enum
             \$table->timestamps();
         });
     }
