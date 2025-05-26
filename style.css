@@ -1,0 +1,29 @@
+:root {
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --button-bg-color: #007bff;
+  --button-text-color: #ffffff;
+}
+
+.dark-theme {
+  --background-color: #333333;
+  --text-color: #ffffff;
+  --button-bg-color: #555555;
+  --button-text-color: #ffffff;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: sans-serif;
+  padding: 20px;
+  margin: 0; /* Added to remove default body margin */
+}
+
+button {
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
